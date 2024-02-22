@@ -37,6 +37,11 @@ DARK = {
 print(f"{"-"*10}Bear Hunting game{"-"*10}")
 
 
+bear_hp = 500
+player_hp = 100
+redbull_count = 2
+
+
 BODY_PART_COEF= {
     "Head": 1.8,
     "Hand": 0.8,
@@ -64,9 +69,27 @@ coefs = bear_body_damage_coef(damages)
 def bear_attack():
     return random.randint(7, 25)
 
+
 def player_attack():
     return random.choice(body_part)
 
+
+def have_energy_drink():
+    return redbull_count > 0
+
+
+def recover_hp():
+    global player_hp, redbull_count
+    if have_energy_drink():
+       redbull_count -= 1
+       player_hp += 50
+       print("You drank redbull +50 HP")
+       return player_hp
+    
+    else:
+        warning_message()
+        return player_hp
+    
 
 def player_is_alive():
     return player_hp > 0
@@ -112,12 +135,18 @@ def dead_message():
             time -= 1
 
 
+def warning_message():
+    time = 3
+    while time > 0:
+        for _ in range(1):
+            print(F"\n{DARK['Red']}Out of redbull{NORMAL['White']}")
+            sleep(0.3)
+            system("cls")
+            time -= 1
+
+
 def main():
     global bear_hp, player_hp
-
-    bear_hp = 500
-    player_hp = 100
-
 
     while is_playable():
         print()
@@ -155,13 +184,12 @@ def main():
                 dead_message()
                 break
             
+
             
 
         elif action == "redbull":
             loading(1, "Drinking redbull")
-            player_hp += 50
-            print("You drank redbull +50 hp")
-
+            recover_hp()
         else:
             system("cls")
             print("Invalid action.Try again!")
@@ -172,3 +200,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
