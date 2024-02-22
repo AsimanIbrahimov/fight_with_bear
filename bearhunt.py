@@ -68,6 +68,18 @@ def player_attack():
     return random.choice(body_part)
 
 
+def player_is_alive():
+    return player_hp > 0
+
+
+def bear_is_alive():
+    return bear_hp > 0
+
+
+def is_playable():
+    return player_is_alive() and bear_is_alive()
+
+
 def loading(time: int, message: str):
     dots = [x for x in range(5)]
     count = 0
@@ -99,12 +111,15 @@ def dead_message():
             system("cls")
             time -= 1
 
+
 def main():
+    global bear_hp, player_hp
+
     bear_hp = 500
     player_hp = 100
 
 
-    while bear_hp > 0 and player_hp > 0:
+    while is_playable():
         print()
         print(f"{NORMAL['Red']}Bear hp: {NORMAL['White']}{bear_hp}")
         print(f"{NORMAL['Green']}Player hp: {NORMAL['White']}{player_hp}")
